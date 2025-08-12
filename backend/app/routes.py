@@ -278,15 +278,12 @@ def add_instance():
     if not Model.query.get(data['id_model']): return jsonify({'error': 'Model not found'}), 404
     if not Color.query.get(data['id_color']): return jsonify({'error': 'Color not found'}), 404
     if not OptionSet.query.get(data['id_option_set']): return jsonify({'error': 'OptionSet not found'}), 404
-    if data.get('id_client') and not Client.query.get(data['id_client']): return jsonify(
-        {'error': 'Client not found'}), 404
 
     new_instance = Instance(
         gearbox=data['gearbox'],
         id_model=data['id_model'],
         id_color=data['id_color'],
-        id_option_set=data['id_option_set'],
-        id_client=data.get('id_client')
+        id_option_set=data['id_option_set']
     )
     db.session.add(new_instance)
     db.session.commit()
@@ -311,15 +308,12 @@ def update_instance(id_instance):
     if 'id_color' in data and not Color.query.get(data['id_color']): return jsonify({'error': 'Color not found'}), 404
     if 'id_option_set' in data and not OptionSet.query.get(data['id_option_set']): return jsonify(
         {'error': 'OptionSet not found'}), 404
-    if 'id_client' in data and data['id_client'] is not None and not Client.query.get(
-        data['id_client']): return jsonify({'error': 'Client not found'}), 404
 
     # Обновляем поля
     instance.gearbox = data.get('gearbox', instance.gearbox)
     instance.id_model = data.get('id_model', instance.id_model)
     instance.id_color = data.get('id_color', instance.id_color)
     instance.id_option_set = data.get('id_option_set', instance.id_option_set)
-    instance.id_client = data.get('id_client', instance.id_client)
 
     db.session.commit()
     return jsonify(instance.to_dict())
@@ -362,30 +356,26 @@ def get_costs():
         costs = CostToday.query.all()
     return jsonify([c.to_dict() for c in costs])
 
-@api.route('/costs/instance/<int:id_instance>/date/<string:date_str>', methods=['GET', 'PUT', 'DELETE'])
-def handle_specific_cost(id_instance, date_str):
-    try:
-        date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
-    except ValueError:
-        return jsonify({'error': 'Invalid date format in URL. Use YYYY-MM-DD'}), 400
+@api.route('/costs/<int:id>', methods=['GET'])
+def get_cost(id):
+    cost = CostToday.query.get_or_404(id)
+    return jsonify(cost.to_dict())
 
-    cost = CostToday.query.get_or_404((id_instance, date_obj))
+@api.route('/costs/<int:id>', methods=['PUT'])
+def update_cost(id):
+    cost = CostToday.query.get_or_404(id)
+    data = request.get_json()
+    cost.price = data.get('price', cost.price)
+    # ... можно добавить обновление других полей при необходимости
+    db.session.commit()
+    return jsonify(cost.to_dict())
 
-    if request.method == 'GET':
-        return jsonify(cost.to_dict())
-
-    if request.method == 'PUT':
-        data = request.get_json()
-        if 'price' not in data:
-            return jsonify({'error': 'Missing price in request body'}), 400
-        cost.price = data['price']
-        db.session.commit()
-        return jsonify(cost.to_dict())
-
-    if request.method == 'DELETE':
-        db.session.delete(cost)
-        db.session.commit()
-        return '', 204
+@api.route('/costs/<int:id>', methods=['DELETE'])
+def delete_cost(id):
+    cost = CostToday.query.get_or_404(id)
+    db.session.delete(cost)
+    db.session.commit()
+    return '', 204
 
 # --- CRUD для Sales (Продажи) --------------------------------------------------------------------------------------
 
@@ -414,9 +404,9 @@ def get_sales():
     sales = Sale.query.all()
     return jsonify([s.to_dict() for s in sales])
 
-@api.route('/sales/<int:id_sale>', methods=['GET'])
-def get_sale(id_sale):
-    sale = Sale.query.get_or_404(id_sale)
+@api.route('/sales/<int:id>', methods=['GET'])
+def get_sale(id):
+    sale = Sale.query.get_or_404(id)
     return jsonify(sale.to_dict())
 
 @api.route('/sales/<int:id_sale>', methods=['PUT'])

@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from . import db
 
 # 1. Таблица Carshows (Автосалоны/Бренды)
 class Carshow(db.Model):
@@ -95,7 +94,6 @@ class Client(db.Model):
     last_name = db.Column(db.String(255), nullable=False)
     first_name = db.Column(db.String(255), nullable=False)
 
-    instances = db.relationship('Instance', back_populates='client')
     sales = db.relationship('Sale', back_populates='client')
 
     def to_dict(self):
@@ -115,12 +113,10 @@ class Instance(db.Model):
     id_model = db.Column(db.Integer, db.ForeignKey('Models.id_model'), nullable=False)
     id_color = db.Column(db.Integer, db.ForeignKey('Colors.id_color'), nullable=False)
     id_option_set = db.Column(db.Integer, db.ForeignKey('Option_sets.id_option_set'), nullable=False)
-    id_client = db.Column(db.Integer, db.ForeignKey('Clients.id_client'), nullable=True)
 
     model = db.relationship('Model', back_populates='instances')
     color = db.relationship('Color', back_populates='instances')
     option_set = db.relationship('OptionSet', back_populates='instances')
-    client = db.relationship('Client', back_populates='instances')
 
     costs = db.relationship('CostToday', back_populates='instance')
     sale = db.relationship('Sale', uselist=False, back_populates='instance')
@@ -131,22 +127,24 @@ class Instance(db.Model):
             'gearbox': self.gearbox,
             'id_model': self.id_model,
             'id_color': self.id_color,
-            'id_option_set': self.id_option_set,
-            'id_client': self.id_client
+            'id_option_set': self.id_option_set
         }
 
 # 8. Таблица Cost_today (История цен)
 class CostToday(db.Model):
     __tablename__ = 'Cost_today'
 
-    id_instance = db.Column(db.Integer, db.ForeignKey('Instances.id_instance'), primary_key=True)
-    date = db.Column(db.Date, primary_key=True)
-    price = db.Column(db.Numeric(8, 2), nullable=False)
+    id_price = db.Column(db.Integer, primary_key=True)
+
+    id_instance = db.Column(db.Integer, db.ForeignKey('Instances.id_instance'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    price = db.Column(db.Numeric(12, 2), nullable=False)
 
     instance = db.relationship('Instance', back_populates='costs')
 
     def to_dict(self):
         return {
+            'id_price': self.id_price,
             'id_instance': self.id_instance,
             'date': self.date.isoformat(),
             'price': float(self.price)
@@ -156,7 +154,8 @@ class CostToday(db.Model):
 class Sale(db.Model):
     __tablename__ = 'Sales'
 
-    id_instance = db.Column(db.Integer, db.ForeignKey('Instances.id_instance'), primary_key=True)
+    id_sale = db.Column(db.Integer, primary_key=True)
+    id_instance = db.Column(db.Integer, db.ForeignKey('Instances.id_instance'), nullable=False, unique=True)
     date_of_sale = db.Column(db.Date, nullable=False)
     id_client = db.Column(db.Integer, db.ForeignKey('Clients.id_client'), nullable=False)
 
@@ -165,6 +164,7 @@ class Sale(db.Model):
 
     def to_dict(self):
         return {
+            'id_sale': self.id_sale,
             'id_instance': self.id_instance,
             'date_of_sale': self.date_of_sale.isoformat(),
             'id_client': self.id_client

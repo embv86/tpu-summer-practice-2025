@@ -7,13 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 db = SQLAlchemy()
 
+
 def create_app():
     app = Flask(__name__)
 
     db_url = os.getenv("DATABASE_URL")
-    if not db_url:
-        raise ValueError("DATABASE_URL is not set in the .env file")
-
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['DEBUG'] = True
