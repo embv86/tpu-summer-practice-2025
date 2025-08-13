@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -9,13 +9,13 @@ import {
     CircularProgress,
 } from '@mui/material';
 import DynamicForm from './DynamicForm';
-import { apiService } from '../services/apiService';
-import { tableConfig } from '../tableConfig';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import {apiService} from '../services/apiService';
+import {tableConfig} from '../tableConfig';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import ruLocale from 'date-fns/locale/ru';
 
-function FormDialog({ open, onClose, onSubmit, item, config }) {
+function FormDialog({open, onClose, onSubmit, item, config}) {
     const [formData, setFormData] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [lookupData, setLookupData] = useState({});
@@ -101,8 +101,8 @@ function FormDialog({ open, onClose, onSubmit, item, config }) {
                 <DialogTitle>{item ? `Редактировать: ${config.displayName}` : `Добавить: ${config.displayName}`}</DialogTitle>
                 <DialogContent>
                     {lookupLoading ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-                            <CircularProgress />
+                        <Box sx={{display: 'flex', justifyContent: 'center', p: 4}}>
+                            <CircularProgress/>
                         </Box>
                     ) : (
                         <DynamicForm
@@ -113,14 +113,20 @@ function FormDialog({ open, onClose, onSubmit, item, config }) {
                         />
                     )}
                 </DialogContent>
-                <DialogActions sx={{ p: '16px 24px' }}>
+                <DialogActions sx={{p: '16px 24px'}}>
                     <Button onClick={onClose} disabled={isSubmitting}>Отмена</Button>
-                    <Box sx={{ position: 'relative' }}>
+                    <Box sx={{position: 'relative'}}>
                         <Button onClick={handleSubmit} variant="contained" disabled={isSubmitting || lookupLoading}>
                             Сохранить
                         </Button>
                         {isSubmitting && (
-                            <CircularProgress size={24} sx={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-12px', marginLeft: '-12px', }} />
+                            <CircularProgress size={24} sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                            }}/>
                         )}
                     </Box>
                 </DialogActions>

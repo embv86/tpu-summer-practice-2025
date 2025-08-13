@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     ListItem,
     ListItemButton,
@@ -15,7 +15,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import NotesIcon from '@mui/icons-material/Notes';
 
-function SidebarItem({ tableKey, tableInfo, onSelect }) {
+function SidebarItem({tableKey, tableInfo, onSelect}) {
     const [open, setOpen] = useState(false);
 
     const handleToggleExpand = (e) => {
@@ -29,11 +29,9 @@ function SidebarItem({ tableKey, tableInfo, onSelect }) {
         <>
             <ListItem
                 disablePadding
-                // Добавляем `secondaryAction` - это специальное место справа в ListItem
-                // для размещения кнопок или переключателей.
                 secondaryAction={
                     <IconButton edge="end" aria-label="expand" onClick={handleToggleExpand}>
-                        {open ? <ExpandLess /> : <ExpandMore />}
+                        {open ? <ExpandLess/> : <ExpandMore/>}
                     </IconButton>
                 }
             >
@@ -41,7 +39,7 @@ function SidebarItem({ tableKey, tableInfo, onSelect }) {
                     <ListItemText
                         primary={tableInfo.displayName}
                         // Добавляем небольшой отступ справа, чтобы текст не "прилипал" к кнопке
-                        sx={{ pr: 2 }}
+                        sx={{pr: 2}}
                     />
                 </ListItemButton>
             </ListItem>
@@ -51,26 +49,26 @@ function SidebarItem({ tableKey, tableInfo, onSelect }) {
                 <List component="div" disablePadding>
 
                     {tableInfo.columns.map(col => (
-                        <ListItem key={col.key} sx={{ pl: 4 }}>
-                            <ListItemIcon sx={{ minWidth: '40px' }}>
+                        <ListItem key={col.key} sx={{pl: 4}}>
+                            <ListItemIcon sx={{minWidth: '40px'}}>
                                 {col.key === tableInfo.primaryKey || (Array.isArray(tableInfo.primaryKey) && tableInfo.primaryKey.includes(col.key))
-                                    ? <VpnKeyIcon fontSize="small" color="primary" />
-                                    : <NotesIcon fontSize="small" color="action" />
+                                    ? <VpnKeyIcon fontSize="small" color="primary"/>
+                                    : <NotesIcon fontSize="small" color="action"/>
                                 }
                             </ListItemIcon>
-                            <ListItemText primary={col.name} secondary={col.key} />
+                            <ListItemText primary={col.name} secondary={col.key}/>
                         </ListItem>
                     ))}
 
                     {hasRelations && (
                         <>
-                            <Divider variant="middle" component="li" />
+                            <Divider variant="middle" component="li"/>
                             {tableInfo.relations.map(rel => (
-                                <ListItem key={rel} sx={{ pl: 4 }}>
-                                    <ListItemIcon sx={{ minWidth: '40px' }}>
-                                        <LinkIcon fontSize="small" color="action" />
+                                <ListItem key={rel} sx={{pl: 4}}>
+                                    <ListItemIcon sx={{minWidth: '40px'}}>
+                                        <LinkIcon fontSize="small" color="action"/>
                                     </ListItemIcon>
-                                    <ListItemText primary={rel} />
+                                    <ListItemText primary={rel}/>
                                 </ListItem>
                             ))}
                         </>

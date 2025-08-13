@@ -1,10 +1,10 @@
 import React from 'react';
-import { tableConfig } from '../tableConfig';
+import {tableConfig} from '../tableConfig';
 import SidebarItem from './SidebarItem';
-import { Paper, List, Divider, Typography } from '@mui/material'; // Заменили Box на Paper
+import {Paper, List, Divider} from '@mui/material';
 import './Sidebar.css';
 
-function Sidebar({ onSelectTable }) {
+function Sidebar({onSelectTable}) {
     const tableKeys = Object.keys(tableConfig);
 
     return (
@@ -26,7 +26,7 @@ function Sidebar({ onSelectTable }) {
                             onSelect={onSelectTable}
                         />
                         {index < tableKeys.length - 1 && (
-                            <Divider variant="fullWidth" component="li" />
+                            <Divider variant="fullWidth" component="li"/>
                         )}
                     </React.Fragment>
                 ))}

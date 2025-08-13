@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 // Универсальные функции для CRUD операций
 export const apiService = {
-    // Получить все записи для сущности (например, '/carshows')
+    // Получить все записи для сущности
     getAll: (resource) => apiClient.get(`/${resource}`),
 
     // Получить одну запись по ID

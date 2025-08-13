@@ -1,20 +1,18 @@
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material'; // Импортируем Box
+import {Box} from '@mui/material';
 
-// --- 👇 ПРИНИМАЕМ onTitleClick КАК ПРОПС 👇 ---
-function Header({ onTitleClick }) {
+function Header({onTitleClick}) {
     return (
         <AppBar position="static">
             <Toolbar>
-                {/* --- 👇 ДЕЛАЕМ ЗАГОЛОВОК КЛИКАБЕЛЬНЫМ 👇 --- */}
                 <Box
                     onClick={onTitleClick}
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        cursor: 'pointer', // Меняем курсор на "руку" при наведении
+                        cursor: 'pointer',
                         flexGrow: 1
                     }}
                 >

@@ -1,5 +1,3 @@
-// src/tableConfig.js
-
 export const tableConfig = {
     carshows: {
         displayName: 'Салоны',

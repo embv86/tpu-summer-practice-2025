@@ -1,44 +1,51 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { Box, Typography, Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
-import { tableConfig } from '../tableConfig';
+import {Box, Typography, Paper, List, ListItem, ListItemIcon, ListItemText, Divider} from '@mui/material';
+import {tableConfig} from '../tableConfig';
 import TableView from './TableView';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import MouseIcon from '@mui/icons-material/Mouse';
 import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
 
-// --- 👇 НОВЫЙ КОМПОНЕНТ ДЛЯ ПРИВЕТСТВЕННОЙ СТРАНИЦЫ 👇 ---
 const WelcomePage = () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', color: 'text.secondary' }}>
+    <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        textAlign: 'center',
+        color: 'text.secondary'
+    }}>
         <Typography variant="h3" gutterBottom>
             Добро пожаловать!
         </Typography>
-        <Typography variant="h6" sx={{ mb: 4 }}>
+        <Typography variant="h6" sx={{mb: 4}}>
             Это интерфейс для управления базой данных "Автосалон".
         </Typography>
 
-        <Divider sx={{ width: '50%', mb: 4 }} />
+        <Divider sx={{width: '50%', mb: 4}}/>
 
         <Typography variant="h5" gutterBottom>
             Как это работает:
         </Typography>
-        <List sx={{ maxWidth: 600, textAlign: 'left' }}>
+        <List sx={{maxWidth: 600, textAlign: 'left'}}>
             <ListItem>
-                <ListItemIcon><MouseIcon color="primary" /></ListItemIcon>
-                <ListItemText primary="Выберите таблицу в меню слева, чтобы просмотреть или изменить ее данные." />
+                <ListItemIcon><MouseIcon color="primary"/></ListItemIcon>
+                <ListItemText primary="Выберите таблицу в меню слева, чтобы просмотреть или изменить ее данные."/>
             </ListItem>
             <ListItem>
-                <ListItemIcon><SearchIcon color="primary" /></ListItemIcon>
-                <ListItemText primary="Используйте поле поиска над таблицей для быстрой фильтрации записей." />
+                <ListItemIcon><SearchIcon color="primary"/></ListItemIcon>
+                <ListItemText primary="Используйте поле поиска над таблицей для быстрой фильтрации записей."/>
             </ListItem>
             <ListItem>
-                <ListItemIcon><SortIcon color="primary" /></ListItemIcon>
-                <ListItemText primary="Кликайте на заголовки колонок, чтобы отсортировать данные." />
+                <ListItemIcon><SortIcon color="primary"/></ListItemIcon>
+                <ListItemText primary="Кликайте на заголовки колонок, чтобы отсортировать данные."/>
             </ListItem>
             <ListItem>
-                <ListItemIcon><DoubleArrowIcon color="primary" /></ListItemIcon>
+                <ListItemIcon><DoubleArrowIcon color="primary"/></ListItemIcon>
                 <ListItemText
                     primary="Дважды кликните на связанный элемент (например, на название бренда в таблице моделей), чтобы мгновенно перейти к этой записи в соответствующей таблице."
                 />
@@ -47,9 +54,7 @@ const WelcomePage = () => (
     </Box>
 );
 
-
 function Layout() {
-    // --- 👇 ГЛАВНОЕ ИЗМЕНЕНИЕ: НАЧАЛЬНОЕ СОСТОЯНИЕ ТЕПЕРЬ null 👇 ---
     const [selectedTable, setSelectedTable] = useState(null); // Было: useState('instances')
 
     const handleGoHome = () => {
@@ -66,7 +71,7 @@ function Layout() {
 
     const handleNavigate = (targetTable, targetId) => {
         setSelectedTable(targetTable);
-        setHighlightedRow({ tableName: targetTable, id: targetId });
+        setHighlightedRow({tableName: targetTable, id: targetId});
     };
 
     const clearHighlight = () => {
@@ -74,12 +79,12 @@ function Layout() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <Header onTitleClick={handleGoHome} />
-            <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden', p: 2, gap: 2 }}>
-                <Sidebar onSelectTable={handleSelectTable} />
+        <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
+            <Header onTitleClick={handleGoHome}/>
+            <Box sx={{display: 'flex', flexGrow: 1, overflow: 'hidden', p: 2, gap: 2}}>
+                <Sidebar onSelectTable={handleSelectTable}/>
 
-                <Paper component="main" sx={{ flexGrow: 1, p: 3, overflow: 'auto' }} elevation={2}>
+                <Paper component="main" sx={{flexGrow: 1, p: 3, overflow: 'auto'}} elevation={2}>
                     {selectedTable ? (
                         // Если таблица выбрана, показываем TableView
                         <>
@@ -98,8 +103,7 @@ function Layout() {
                             />
                         </>
                     ) : (
-                        // Если таблица НЕ выбрана (selectedTable === null), показываем WelcomePage
-                        <WelcomePage />
+                        <WelcomePage/>
                     )}
                 </Paper>
             </Box>

@@ -8,13 +8,7 @@ import {
     Button,
 } from '@mui/material';
 
-// Компонент принимает:
-// open - boolean, открыто ли окно
-// onClose - функция для закрытия окна (вызывается при клике на "Отмена" или вне окна)
-// onConfirm - функция, которая выполняется при клике на "Подтвердить"
-// title - заголовок окна
-// message - текст сообщения внутри окна
-function ConfirmationDialog({ open, onClose, onConfirm, title, message }) {
+function ConfirmationDialog({open, onClose, onConfirm, title, message}) {
     return (
         <Dialog
             open={open}
