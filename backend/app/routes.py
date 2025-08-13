@@ -92,7 +92,7 @@ def add_color():
         return jsonify({'error': 'Missing color name'}), 400
 
     if Color.query.filter_by(color=data['color']).first():
-        return jsonify({'error': 'Color already exists'}), 409  # 409 Conflict
+        return jsonify({'error': 'Color already exists'}), 409
 
     new_color = Color(color=data['color'])
     db.session.add(new_color)
@@ -369,7 +369,6 @@ def get_cost(id):
     cost = CostToday.query.get_or_404(id)
     return jsonify(cost.to_dict())
 
-
 @api.route('/costs/<int:id>', methods=['PUT'])
 def update_cost(id):
     cost = CostToday.query.get_or_404(id)
@@ -431,7 +430,6 @@ def get_sales():
 def get_sale(id):
     sale = Sale.query.get_or_404(id)
     return jsonify(sale.to_dict())
-
 
 @api.route('/sales/<int:id>', methods=['PUT'])
 def update_sale(id):

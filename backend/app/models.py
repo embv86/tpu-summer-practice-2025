@@ -1,4 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
 from . import db
 
 # 1. Таблица Carshows (Автосалоны/Бренды)
