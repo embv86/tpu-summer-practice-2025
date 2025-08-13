@@ -333,16 +333,24 @@ def add_cost():
     required = ['id_instance', 'date', 'price']
     if not all(field in data for field in required):
         return jsonify({'error': 'Missing data. Required: id_instance, date, price'}), 400
+
     if not Instance.query.get(data['id_instance']):
         return jsonify({'error': 'Instance not found'}), 404
+
     try:
         date_obj = datetime.strptime(data['date'], '%Y-%m-%d').date()
-    except ValueError:
+    except (ValueError, TypeError):
         return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
-    if CostToday.query.get((data['id_instance'], date_obj)):
+
+    existing_cost = CostToday.query.filter_by(id_instance=data['id_instance'], date=date_obj).first()
+    if existing_cost:
         return jsonify({'error': 'Cost for this instance on this date already exists'}), 409
 
-    new_cost = CostToday(id_instance=data['id_instance'], date=date_obj, price=data['price'])
+    new_cost = CostToday(
+        id_instance=data['id_instance'],
+        date=date_obj,
+        price=data['price']
+    )
     db.session.add(new_cost)
     db.session.commit()
     return jsonify(new_cost.to_dict()), 201
@@ -361,12 +369,27 @@ def get_cost(id):
     cost = CostToday.query.get_or_404(id)
     return jsonify(cost.to_dict())
 
+
 @api.route('/costs/<int:id>', methods=['PUT'])
 def update_cost(id):
     cost = CostToday.query.get_or_404(id)
     data = request.get_json()
-    cost.price = data.get('price', cost.price)
-    # ... можно добавить обновление других полей при необходимости
+
+    if 'price' in data:
+        cost.price = data['price']
+
+    if 'date' in data:
+        try:
+            date_obj = datetime.strptime(data['date'], '%Y-%m-%d').date()
+            cost.date = date_obj
+        except (ValueError, TypeError):
+            return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
+
+    if 'id_instance' in data:
+        if not Instance.query.get(data['id_instance']):
+            return jsonify({'error': 'Instance not found'}), 404
+        cost.id_instance = data['id_instance']
+
     db.session.commit()
     return jsonify(cost.to_dict())
 
@@ -409,9 +432,10 @@ def get_sale(id):
     sale = Sale.query.get_or_404(id)
     return jsonify(sale.to_dict())
 
-@api.route('/sales/<int:id_sale>', methods=['PUT'])
-def update_sale(id_sale):
-    sale = Sale.query.get_or_404(id_sale)
+
+@api.route('/sales/<int:id>', methods=['PUT'])
+def update_sale(id):
+    sale = Sale.query.get_or_404(id)
     data = request.get_json()
 
     if 'id_client' in data:
@@ -422,8 +446,16 @@ def update_sale(id_sale):
     if 'date_of_sale' in data:
         try:
             sale.date_of_sale = datetime.strptime(data['date_of_sale'], '%Y-%m-%d').date()
-        except ValueError:
+        except (ValueError, TypeError):
             return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
+
+    if 'id_instance' in data:
+        if not Instance.query.get(data['id_instance']):
+            return jsonify({'error': 'Instance not found'}), 404
+        existing_sale = Sale.query.filter(Sale.id_instance == data['id_instance'], Sale.id_sale != id).first()
+        if existing_sale:
+            return jsonify({'error': 'This instance has already been sold'}), 409
+        sale.id_instance = data['id_instance']
 
     db.session.commit()
     return jsonify(sale.to_dict())
