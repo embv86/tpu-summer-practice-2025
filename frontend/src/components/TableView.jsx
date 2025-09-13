@@ -84,6 +84,7 @@ function TableView({tableName, onNavigate, highlightedRowId, onClearHighlight}) 
     useEffect(() => {
         fetchData();
     }, [tableName]);
+
     useEffect(() => {
         if (highlightedRowId && highlightedRowRef.current) {
             highlightedRowRef.current.scrollIntoView({behavior: 'smooth', block: 'center'});

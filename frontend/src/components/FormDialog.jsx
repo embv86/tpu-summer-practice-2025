@@ -20,7 +20,6 @@ function FormDialog({open, onClose, onSubmit, item, config}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [lookupData, setLookupData] = useState({});
     const [lookupLoading, setLookupLoading] = useState(true);
-
     const getRelationNameFromKey = (key) => {
         if (!key.startsWith('id_')) return null;
         const baseName = key.substring(3).replace(/_/g, '');
@@ -65,7 +64,6 @@ function FormDialog({open, onClose, onSubmit, item, config}) {
             fetchLookupData();
         }
     }, [open, config]);
-
     useEffect(() => {
         if (open) {
             if (item) {
@@ -106,7 +104,7 @@ function FormDialog({open, onClose, onSubmit, item, config}) {
                         </Box>
                     ) : (
                         <DynamicForm
-                            config={config} // Передаем весь конфиг
+                            config={config}
                             formData={formData}
                             setFormData={setFormData}
                             lookupData={lookupData}

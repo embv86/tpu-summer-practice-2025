@@ -38,7 +38,6 @@ function SidebarItem({tableKey, tableInfo, onSelect}) {
                 <ListItemButton onClick={() => onSelect(tableKey)}>
                     <ListItemText
                         primary={tableInfo.displayName}
-                        // Добавляем небольшой отступ справа, чтобы текст не "прилипал" к кнопке
                         sx={{pr: 2}}
                     />
                 </ListItemButton>

@@ -5,19 +5,14 @@ import {tableConfig} from '../tableConfig';
 
 function DynamicForm({config, formData, setFormData, lookupData}) {
     const {columns, primaryKey} = config;
-
     const handleTextChange = (event) => {
         const {name, value} = event.target;
         setFormData(prevData => ({...prevData, [name]: value}));
     };
-
     const handleDateChange = (name, newValue) => {
-        // newValue - это объект Date или null от DatePicker
-        // Мы форматируем его в строку YYYY-MM-DD для нашего состояния и API
         const formattedDate = newValue && !isNaN(newValue) ? newValue.toISOString().split('T')[0] : null;
         setFormData(prevData => ({...prevData, [name]: formattedDate}));
     };
-
     const getDisplayValue = (item, relationName) => {
         const displayConf = tableConfig[relationName]?.displayColumn;
         if (typeof displayConf === 'function') {
@@ -25,7 +20,6 @@ function DynamicForm({config, formData, setFormData, lookupData}) {
         }
         return item[displayConf] || `ID: ${item[tableConfig[relationName]?.primaryKey]}`;
     };
-
     const getRelationNameFromKey = (key) => {
         if (!key.startsWith('id_')) return null;
         const baseName = key.substring(3).replace(/_/g, '');
@@ -77,7 +71,7 @@ function DynamicForm({config, formData, setFormData, lookupData}) {
                                     name={col.key}
                                     value={formData[col.key] || ''}
                                     label={col.name}
-                                    onChange={handleTextChange} // Здесь используется другая функция
+                                    onChange={handleTextChange}
                                 >
                                     <MenuItem value=""><em>(не выбрано)</em></MenuItem>
                                     {lookupData[relationName]?.map((option) => (

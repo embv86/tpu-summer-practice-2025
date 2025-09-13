@@ -15,7 +15,7 @@ export const tableConfig = {
         displayColumn: (item) => `${item.model} (${item.bodywork})`,
         columns: [
             { key: 'id_model', name: 'ID' },
-            { key: 'id_carshow', name: 'Бренд', isForeignKey: true, references: 'carshows' },
+            { key: 'id_carshow', name: 'Бренд (ID)', isForeignKey: true, references: 'carshows' },
             { key: 'model', name: 'Название модели' },
             { key: 'bodywork', name: 'Тип кузова' },
         ],
@@ -58,7 +58,7 @@ export const tableConfig = {
         displayColumn: 'option',
         columns: [
             { key: 'id_option', name: 'ID' },
-            { key: 'id_option_set', name: 'Набор', isForeignKey: true, references: 'optionsets' },
+            { key: 'id_option_set', name: 'Набор (ID)', isForeignKey: true, references: 'optionsets' },
             { key: 'option', name: 'Название опции' },
         ],
         relations: ['Наборы опций М:1'],
@@ -69,9 +69,9 @@ export const tableConfig = {
         displayColumn: (item) => `ID Экземпляра ${item.id_instance}`,
         columns: [
             { key: 'id_instance', name: 'ID' },
-            { key: 'id_model', name: 'Модель', isForeignKey: true, references: 'models' },
-            { key: 'id_color', name: 'Цвет', isForeignKey: true, references: 'colors' },
-            { key: 'id_option_set', name: 'Набор опций', isForeignKey: true, references: 'optionsets' },
+            { key: 'id_model', name: 'Модель (ID)', isForeignKey: true, references: 'models' },
+            { key: 'id_color', name: 'Цвет (ID)', isForeignKey: true, references: 'colors' },
+            { key: 'id_option_set', name: 'Набор опций (ID)', isForeignKey: true, references: 'optionsets' },
             { key: 'gearbox', name: 'Коробка передач' },
         ],
         relations: ['Модели М:1', 'Цвета М:1', 'Наборы опций М:1', 'Цены 1:М', 'Продажи 1:1'],
@@ -82,7 +82,7 @@ export const tableConfig = {
         displayColumn: (item) => `Цена #${item.id_price}`,
         columns: [
             { key: 'id_price', name: 'ID' },
-            { key: 'id_instance', name: 'Экземпляр', isForeignKey: true, references: 'instances' },
+            { key: 'id_instance', name: 'Экземпляр (ID)', isForeignKey: true, references: 'instances' },
             { key: 'date', name: 'Дата' },
             { key: 'price', name: 'Цена' },
         ],
@@ -94,8 +94,8 @@ export const tableConfig = {
         displayColumn: (item) => `Продажа #${item.id_sale}`,
         columns: [
             { key: 'id_sale', name: 'ID' },
-            { key: 'id_instance', name: 'Проданный экземпляр', isForeignKey: true, references: 'instances' },
-            { key: 'id_client', name: 'Клиент' },
+            { key: 'id_instance', name: 'Проданный экземпляр (ID)', isForeignKey: true, references: 'instances' },
+            { key: 'id_client', name: 'Клиент (ID)', isForeignKey: true, references: 'clients' },
             { key: 'date_of_sale', name: 'Дата продажи' },
         ],
         relations: ['Экземпляры 1:1', 'Клиенты М:1'],

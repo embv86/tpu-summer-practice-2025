@@ -86,7 +86,6 @@ function Layout() {
 
                 <Paper component="main" sx={{flexGrow: 1, p: 3, overflow: 'auto'}} elevation={2}>
                     {selectedTable ? (
-                        // Если таблица выбрана, показываем TableView
                         <>
                             <Typography variant="h4" gutterBottom>
                                 {tableConfig[selectedTable]?.displayName}
