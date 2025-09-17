@@ -7,7 +7,7 @@ api = Blueprint('api', __name__)
 # --- CRUD для Carshows (Бренды) -------------------------------------------------------------------------------------
 
 @api.route('/carshows', methods=['POST'])
-def add_carshow():
+def add_carshow():  
     data = request.get_json()
     if 'carshow_brand' not in data:
         return jsonify({'error': 'Missing carshow_brand'}), 400
@@ -20,11 +20,6 @@ def add_carshow():
 def get_carshows():
     carshows = Carshow.query.all()
     return jsonify([cs.to_dict() for cs in carshows])
-
-@api.route('/carshows/<int:id_carshow>', methods=['GET'])
-def get_carshow(id_carshow):
-    carshow = Carshow.query.get_or_404(id_carshow)
-    return jsonify(carshow.to_dict())
 
 @api.route('/carshows/<int:id_carshow>', methods=['PUT'])
 def update_carshow(id_carshow):
@@ -62,11 +57,6 @@ def get_clients():
     clients = Client.query.all()
     return jsonify([client.to_dict() for client in clients])
 
-@api.route('/clients/<int:id_client>', methods=['GET'])
-def get_client(id_client):
-    client = Client.query.get_or_404(id_client)
-    return jsonify(client.to_dict())
-
 @api.route('/clients/<int:id_client>', methods=['PUT'])
 def update_client(id_client):
     client = Client.query.get_or_404(id_client)
@@ -103,11 +93,6 @@ def add_color():
 def get_colors():
     colors = Color.query.all()
     return jsonify([c.to_dict() for c in colors])
-
-@api.route('/colors/<int:id_color>', methods=['GET'])
-def get_color(id_color):
-    color = Color.query.get_or_404(id_color)
-    return jsonify(color.to_dict())
 
 @api.route('/colors/<int:id_color>', methods=['PUT'])
 def update_color(id_color):
@@ -149,11 +134,6 @@ def get_models():
     models = Model.query.all()
     return jsonify([m.to_dict() for m in models])
 
-@api.route('/models/<int:id_model>', methods=['GET'])
-def get_model(id_model):
-    model = Model.query.get_or_404(id_model)
-    return jsonify(model.to_dict())
-
 @api.route('/models/<int:id_model>', methods=['PUT'])
 def update_model(id_model):
     model = Model.query.get_or_404(id_model)
@@ -192,11 +172,6 @@ def get_optionsets():
     sets = OptionSet.query.all()
     return jsonify([s.to_dict() for s in sets])
 
-@api.route('/optionsets/<int:id_optionset>', methods=['GET'])
-def get_optionset(id_optionset):
-    opt_set = OptionSet.query.get_or_404(id_optionset)
-    return jsonify(opt_set.to_dict())
-
 @api.route('/optionsets/<int:id_optionset>', methods=['PUT'])
 def update_optionset(id_optionset):
     opt_set = OptionSet.query.get_or_404(id_optionset)
@@ -233,16 +208,9 @@ def add_option():
 @api.route('/options', methods=['GET'])
 def get_options():
     set_id = request.args.get('set_id', type=int)
-    if set_id:
-        options = Option.query.filter_by(id_option_set=set_id).all()
-    else:
-        options = Option.query.all()
+    if set_id:  options = Option.query.filter_by(id_option_set=set_id).all()
+    else:   options = Option.query.all()
     return jsonify([opt.to_dict() for opt in options])
-
-@api.route('/options/<int:id_option>', methods=['GET'])
-def get_option(id_option):
-    option = Option.query.get_or_404(id_option)
-    return jsonify(option.to_dict())
 
 @api.route('/options/<int:id_option>', methods=['PUT'])
 def update_option(id_option):
@@ -293,11 +261,6 @@ def add_instance():
 def get_instances():
     instances = Instance.query.all()
     return jsonify([i.to_dict() for i in instances])
-
-@api.route('/instances/<int:id_instance>', methods=['GET'])
-def get_instance(id_instance):
-    instance = Instance.query.get_or_404(id_instance)
-    return jsonify(instance.to_dict())
 
 @api.route('/instances/<int:id_instance>', methods=['PUT'])
 def update_instance(id_instance):
@@ -364,11 +327,6 @@ def get_costs():
         costs = CostToday.query.all()
     return jsonify([c.to_dict() for c in costs])
 
-@api.route('/costs/<int:id>', methods=['GET'])
-def get_cost(id):
-    cost = CostToday.query.get_or_404(id)
-    return jsonify(cost.to_dict())
-
 @api.route('/costs/<int:id>', methods=['PUT'])
 def update_cost(id):
     cost = CostToday.query.get_or_404(id)
@@ -425,11 +383,6 @@ def add_sale():
 def get_sales():
     sales = Sale.query.all()
     return jsonify([s.to_dict() for s in sales])
-
-@api.route('/sales/<int:id>', methods=['GET'])
-def get_sale(id):
-    sale = Sale.query.get_or_404(id)
-    return jsonify(sale.to_dict())
 
 @api.route('/sales/<int:id>', methods=['PUT'])
 def update_sale(id):
