@@ -2,7 +2,6 @@ import React from 'react';
 import {tableConfig} from '../tableConfig';
 import SidebarItem from './SidebarItem';
 import {Paper, List, Divider} from '@mui/material';
-import './Sidebar.css';
 
 function Sidebar({onSelectTable}) {
     const tableKeys = Object.keys(tableConfig);
