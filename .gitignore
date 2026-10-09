@@ -1,0 +1,22 @@
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# IDE / Editor
+.idea/
+.vscode/
+
+# Node & Vite
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/

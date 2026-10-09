@@ -7,13 +7,16 @@ from dotenv import load_dotenv
 load_dotenv()
 db = SQLAlchemy()
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
 
     db_url = os.getenv("DATABASE_URL")
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['DEBUG'] = True
+
+    if test_config:
+        app.config.update(test_config)
 
     db.init_app(app)
     CORS(app)
